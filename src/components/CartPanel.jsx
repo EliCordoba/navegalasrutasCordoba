@@ -1,32 +1,30 @@
-const CartPanel = ({ cart, removeItem, emptyCart }) => {
-  // Calcular total del carrito
-  const total = cart.reduce((acc, item) => acc + item.price * item.qty, 0);
+import { useCart } from "../context/CartContext";
+
+const CartPanel = () => {
+  const { cart, removeFromCart, clearCart } = useCart();
+
+  if (!cart || cart.length === 0) {
+    return (
+      <div className="cart-panel">
+        <h3>Carrito vacío</h3>
+        <p>No hay productos agregados.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="cart-panel">
-      <h2>🛒 Carrito de compras</h2>
-
-      {cart.length === 0 ? (
-        <p>Tu carrito está vacío</p>
-      ) : (
-        <>
-          <ul>
-            {cart.map((item, index) => (
-              <li key={index}>
-                {item.nombre} - ${item.price} x {item.qty} ={" "}
-                <strong>${item.price * item.qty}</strong>
-                <button onClick={() => removeItem(index)}>❌</button>
-              </li>
-            ))}
-          </ul>
-
-          <p>
-            <strong>Total: ${total}</strong>
-          </p>
-
-          <button onClick={emptyCart}>Vaciar carrito</button>
-        </>
-      )}
+      <h3>Tu carrito</h3>
+      <ul>
+        {cart.map((item, index) => (
+          <li key={index}>
+            <img src={`/imagenes/${item.img}`} alt={item.nombre} width="50" />
+            <span>{item.nombre}</span> - ${item.price} x {item.qty}
+            <button onClick={() => removeFromCart(item.id)}>❌</button>
+          </li>
+        ))}
+      </ul>
+      <button onClick={clearCart}>Vaciar carrito</button>
     </div>
   );
 };

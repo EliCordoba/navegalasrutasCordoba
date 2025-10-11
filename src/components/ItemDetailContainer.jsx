@@ -10,10 +10,10 @@ const { idProducto } = useParams();
 
 useEffect(() => {
     setLoading(true);
-    getProductById(idProducto).then((res) => {
-    setProducto(res);
-    setLoading(false);
-    });
+    getProductById(idProducto)
+    .then(res => setProducto(res))
+    .catch(() => setProducto(null))
+    .finally(() => setLoading(false));
 }, [idProducto]);
 
 if (loading) return <p style={{ textAlign: "center" }}>Cargando...</p>;
@@ -23,3 +23,4 @@ return <ItemDetail producto={producto} addToCart={addToCart} />;
 };
 
 export default ItemDetailContainer;
+

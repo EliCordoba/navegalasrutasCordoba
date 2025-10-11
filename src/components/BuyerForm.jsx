@@ -1,57 +1,56 @@
 import { useState } from "react";
 
-const BuyerForm = () => {
+const BuyerForm = ({ onConfirm }) => {
 const [form, setForm] = useState({
     nombre: "",
     email: "",
-    telefono: "",
+    telefono: ""
 });
 
 const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setForm({
+    ...form,
+    [e.target.name]: e.target.value
+    });
 };
 
 const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Datos del comprador:", form);
-    alert("¡Gracias por tu compra, " + form.nombre + "!");
-    setForm({ nombre: "", email: "", telefono: "" });
+    const orderId = Math.floor(Math.random() * 1000000);
+    alert(`¡Gracias por tu compra, ${form.nombre}! Tu orden es: #${orderId}`);
+    onConfirm(form);
 };
 
 return (
-    <div className="buyer-form">
-    <h2>📝 Datos del comprador</h2>
-    <form onSubmit={handleSubmit}>
-        <input
+    <form className="buyer-form" onSubmit={handleSubmit}>
+    <h3>Datos del comprador</h3>
+    <input
         type="text"
         name="nombre"
-        placeholder="Nombre completo"
         value={form.nombre}
         onChange={handleChange}
+        placeholder="Nombre"
         required
-        />
-        <input
+    />
+    <input
         type="email"
         name="email"
-        placeholder="Correo electrónico"
         value={form.email}
         onChange={handleChange}
+        placeholder="Email"
         required
-        />
-        <input
+    />
+    <input
         type="tel"
         name="telefono"
-        placeholder="Teléfono"
         value={form.telefono}
         onChange={handleChange}
+        placeholder="Teléfono"
         required
-        />
-        <button type="submit">Finalizar compra</button>
+    />
+    <button type="submit">Confirmar compra</button>
     </form>
-    </div>
 );
 };
 
 export default BuyerForm;
-
-

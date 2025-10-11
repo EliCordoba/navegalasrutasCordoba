@@ -216,6 +216,51 @@ button {
 button:hover {
   background-color: #be185d;
 }
+.categories {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  border-radius: 16px;
+}
+
+.category-card {
+  text-align: center;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  padding: 1rem;
+  width: 160px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-decoration: none;
+  color: #333;
+}
+
+.category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+
+.category-img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: filter 0.3s ease;
+}
+
+.category-img:hover {
+  filter: brightness(1.1);
+}
+
+.category-card h3 {
+  margin-top: 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
 
 @media (max-width: 768px) {
   .cart-container {

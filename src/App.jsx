@@ -1,70 +1,59 @@
+import { Routes, Route } from "react-router-dom";
 import { useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-
 import NavBar from "./components/NavBar";
 import PromoBanner from "./components/PromoBanner";
 import ItemListContainer from "./components/ItemListContainer";
 import ItemDetailContainer from "./components/ItemDetailContainer";
+import Categories from "./components/Categories";
 import Contacto from "./components/Contacto";
 import CartPanel from "./components/CartPanel";
 import BuyerForm from "./components/BuyerForm";
+import SearchBar from "./components/SearchBar";
 
-import "./components/App.css";
+const App = () => {
+  const [cartVisible, setCartVisible] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
-
-function App() {
-  const [cart, setCart] = useState([]);
-  const [showCart, setShowCart] = useState(false);
-
-  const toggleCart = () => setShowCart((prev) => !prev);
-
-  const addToCart = (producto) => {
-    setCart((prev) => [...prev, { ...producto, qty: 1 }]);
-  };
-
-  const removeItem = (index) => {
-    setCart((prev) => prev.filter((_, i) => i !== index));
-  };
-
-  const emptyCart = () => setCart([]);
+  const toggleCart = () => setCartVisible(!cartVisible);
+  const handleSearch = (term) => setSearchTerm(term.toLowerCase());
+  const filteredProducts = (productos) =>
+    productos.filter((p) => p.nombre.toLowerCase().includes(searchTerm));
 
   return (
-    <BrowserRouter>
-      <NavBar cartCount={cart.length} toggleCart={toggleCart} />
+    <>
       <PromoBanner />
+      <NavBar toggleCart={toggleCart} />
 
-      {showCart && (
-        <div className="cart-section">
-          <CartPanel cart={cart} removeItem={removeItem} emptyCart={emptyCart} />
+      {cartVisible && (
+        <>
+          <CartPanel />
           <BuyerForm />
-        </div>
+        </>
       )}
 
       <Routes>
         <Route
           path="/"
-          element={<ItemListContainer greeting="¡Bienvenido a nuestra tienda online!" />}
+          element={
+            <>
+              <SearchBar onSearch={handleSearch} />
+              <Categories />
+              <ItemListContainer
+                greeting="¡Bienvenido a nuestra tienda online!"
+                filterFn={filteredProducts}
+              />
+            </>
+          }
         />
         <Route
           path="/category/:idCategoria"
-          element={<ItemListContainer greeting="Productos por categoría" />}
+          element={<ItemListContainer greeting="Categoría seleccionada" />}
         />
-        <Route
-          path="/item/:idProducto"
-          element={<ItemDetailContainer addToCart={addToCart} />}
-        />
+        <Route path="/item/:idProducto" element={<ItemDetailContainer />} />
         <Route path="/contacto" element={<Contacto />} />
-        <Route
-          path="*"
-          element={
-            <p style={{ textAlign: "center", marginTop: "2rem" }}>
-              Página no encontrada (404)
-            </p>
-          }
-        />
       </Routes>
-    </BrowserRouter>
+    </>
   );
-}
+};
 
 export default App;
